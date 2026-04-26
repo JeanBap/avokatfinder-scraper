@@ -14,7 +14,7 @@ PLZ_PREFIXES = [str(i) for i in range(10)]  # 0x-9x thousands
 
 async def upsert(client, rows):
     if not rows: return 0
-    r = await client.post(f"{SUPABASE_URL}/rest/v1/lawyers_notaries", json=rows,
+    r = await client.post(f"{SUPABASE_URL}/rest/v1/lawyers_notaries?on_conflict=source,source_id", json=rows,
         headers={**HEADERS,"Prefer":"resolution=ignore-duplicates,return=minimal"}, timeout=30)
     return len(rows) if r.status_code < 300 else 0
 
